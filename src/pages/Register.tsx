@@ -26,11 +26,12 @@ const Register = () => {
     }
     // TODO: Implement actual registration
     if (name && email && password) {
-      navigate('/dashboard');
       toast({
         title: "Success",
         description: "Account created successfully"
       });
+      // Redirect to login page after successful registration
+      navigate('/login');
     }
   };
 
