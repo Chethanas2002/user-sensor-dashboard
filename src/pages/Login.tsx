@@ -38,7 +38,7 @@ const Login = () => {
         <div className="flex items-center gap-4">
           <Popover open={isAuthPopoverOpen} onOpenChange={setIsAuthPopoverOpen}>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="text-white border-gray-700">
+              <Button variant="outline" className="text-white border-gray-700 bg-purple-600 hover:bg-purple-700">
                 <LogIn className="mr-2 h-4 w-4" />
                 Sign In
               </Button>
@@ -106,16 +106,6 @@ const Login = () => {
             <p className="text-xl text-gray-300">
               Our intelligent system detects and prevents ransomware threats before they can encrypt your valuable data.
             </p>
-            <div className="flex flex-wrap gap-4 mt-2">
-              <Link to="/register">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  Get Started Today
-                </Button>
-              </Link>
-              <Button size="lg" variant="outline" className="border-gray-700 text-white">
-                Watch Demo
-              </Button>
-            </div>
             
             <div className="grid grid-cols-3 gap-4 mt-8">
               <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
