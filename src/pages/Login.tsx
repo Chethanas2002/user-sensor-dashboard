@@ -27,6 +27,14 @@ const Login = () => {
     }
   };
 
+  const navigateToDashboard = () => {
+    navigate('/dashboard');
+    toast({
+      title: "Developer Mode",
+      description: "Accessing dashboard directly without authentication"
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-800">
       {/* Top Navigation Bar */}
@@ -89,6 +97,15 @@ const Login = () => {
               Register
             </Button>
           </Link>
+          
+          {/* Developer shortcut to dashboard */}
+          <Button 
+            variant="outline" 
+            className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600"
+            onClick={navigateToDashboard}
+          >
+            Access Dashboard
+          </Button>
         </div>
       </header>
 
