@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -25,14 +24,6 @@ const Login = () => {
         description: "Logged in successfully"
       });
     }
-  };
-
-  const navigateToDashboard = () => {
-    navigate('/dashboard');
-    toast({
-      title: "Developer Mode",
-      description: "Accessing dashboard directly without authentication"
-    });
   };
 
   return (
@@ -97,15 +88,6 @@ const Login = () => {
               Register
             </Button>
           </Link>
-          
-          {/* Developer shortcut to dashboard */}
-          <Button 
-            variant="outline" 
-            className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600"
-            onClick={navigateToDashboard}
-          >
-            Access Dashboard
-          </Button>
         </div>
       </header>
 
