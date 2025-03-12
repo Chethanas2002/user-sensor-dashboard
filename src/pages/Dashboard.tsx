@@ -28,7 +28,7 @@ const Dashboard = () => {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Security Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Welcome, Admin</h1>
           <p className="text-gray-500">Real-time overview of your system's security status</p>
         </div>
         

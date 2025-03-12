@@ -38,11 +38,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   const menuItems = [
     { title: "Overview", icon: Home, path: "/dashboard" },
-    { title: "Threat Detection", icon: Shield, path: "/dashboard/threats" },
+    { title: "Detailed Logs", icon: FileText, path: "/dashboard/logs" },
     { title: "Alerts", icon: AlertCircle, path: "/dashboard/alerts" },
-    { title: "Activity Logs", icon: FileText, path: "/dashboard/logs" },
     { title: "Reports", icon: BarChart, path: "/dashboard/reports" },
-    { title: "User Management", icon: Users, path: "/dashboard/users" },
     { title: "Settings", icon: Settings, path: "/dashboard/settings" },
   ];
 
