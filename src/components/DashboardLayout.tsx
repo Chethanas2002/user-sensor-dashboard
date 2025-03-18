@@ -13,14 +13,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { 
-  Menu, 
   Home, 
-  AlertCircle, 
   FileText, 
+  AlertCircle, 
+  BarChart, 
   Settings, 
   LogOut, 
   Shield, 
-  BarChart, 
   Search,
   Bell 
 } from "lucide-react";
@@ -32,17 +31,8 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  const menuItems = [
-    { title: "Overview", icon: Home, path: "/dashboard" },
-    { title: "Detailed Logs", icon: FileText, path: "/dashboard/logs" },
-    { title: "Alerts", icon: AlertCircle, path: "/dashboard/alerts" },
-    { title: "Reports", icon: BarChart, path: "/dashboard/reports" },
-    { title: "Settings", icon: Settings, path: "/dashboard/settings" },
-  ];
 
   const handleLogout = () => {
     toast({
@@ -67,9 +57,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
-      <SidebarProvider>
-        <Sidebar className="border-r border-gray-200">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <Sidebar variant="floating" className="border-r border-gray-200">
           <SidebarContent>
             <div className="p-4 flex items-center">
               <Shield className="h-6 w-6 text-blue-500 mr-2" />
@@ -112,17 +102,55 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {menuItems.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        onClick={() => handleMenuClick(item.path)}
-                      >
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      onClick={() => handleMenuClick("/dashboard")}
+                    >
+                      <Home className="h-5 w-5" />
+                      <span>Overview</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      onClick={() => handleMenuClick("/dashboard/logs")}
+                    >
+                      <FileText className="h-5 w-5" />
+                      <span>Detailed Logs</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      onClick={() => handleMenuClick("/dashboard/alerts")}
+                    >
+                      <AlertCircle className="h-5 w-5" />
+                      <span>Alerts</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      onClick={() => handleMenuClick("/dashboard/reports")}
+                    >
+                      <BarChart className="h-5 w-5" />
+                      <span>Reports</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      onClick={() => handleMenuClick("/dashboard/settings")}
+                    >
+                      <Settings className="h-5 w-5" />
+                      <span>Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -139,13 +167,14 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             </div>
           </SidebarContent>
         </Sidebar>
-      </SidebarProvider>
-      <main className="flex-1 bg-gray-50 p-6 overflow-auto">
-        <div className="max-w-7xl mx-auto">
-          {children}
-        </div>
-      </main>
-    </div>
+        
+        <main className="flex-1 bg-gray-50 p-6 overflow-auto">
+          <div className="max-w-full mx-auto">
+            {children}
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 };
 
