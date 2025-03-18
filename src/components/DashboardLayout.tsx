@@ -7,8 +7,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,6 @@ import {
   LogOut, 
   Shield, 
   BarChart, 
-  Users,
   Search,
   Bell 
 } from "lucide-react";
@@ -70,54 +69,45 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen flex w-full">
       <SidebarProvider>
-        <Sidebar className={`transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'}`}>
+        <Sidebar className="border-r border-gray-200">
           <SidebarContent>
-            <div className="p-4 flex justify-between items-center">
-              <div className={`flex items-center gap-2 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`}>
-                <Shield className="h-6 w-6 text-blue-500" />
-                <h1 className="font-bold text-xl">SecureGuard</h1>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
+            <div className="p-4 flex items-center">
+              <Shield className="h-6 w-6 text-blue-500 mr-2" />
+              <h1 className="font-bold text-xl">SecureGuard</h1>
             </div>
             
             {/* Quick actions */}
-            <div className="px-3 mb-2">
-              <div className="flex gap-2 mb-4">
+            <div className="px-4 py-2">
+              <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
-                  size="icon"
-                  className="flex-1 h-10"
+                  size="sm"
+                  className="justify-start"
                   onClick={() => toast({
                     title: "Search",
                     description: "Search functionality coming soon"
                   })}
                 >
-                  <Search className="h-4 w-4" />
-                  {isSidebarOpen && <span className="ml-2">Search</span>}
+                  <Search className="h-4 w-4 mr-2" />
+                  Search
                 </Button>
                 <Button
                   variant="outline"
-                  size="icon"
-                  className="flex-1 h-10"
+                  size="sm"
+                  className="justify-start"
                   onClick={() => toast({
                     title: "Notifications",
                     description: "You have no new notifications"
                   })}
                 >
-                  <Bell className="h-4 w-4" />
-                  {isSidebarOpen && <span className="ml-2">Alerts</span>}
+                  <Bell className="h-4 w-4 mr-2" />
+                  Alerts
                 </Button>
               </div>
             </div>
             
             <SidebarGroup>
-              <SidebarGroupLabel className={isSidebarOpen ? 'opacity-100' : 'opacity-0'}>
+              <SidebarGroupLabel>
                 Main Navigation
               </SidebarGroupLabel>
               <SidebarGroupContent>
@@ -125,13 +115,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
-                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
                         onClick={() => handleMenuClick(item.path)}
                       >
                         <item.icon className="h-5 w-5" />
-                        <span className={`transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`}>
-                          {item.title}
-                        </span>
+                        <span>{item.title}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -142,13 +130,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <div className="absolute bottom-4 w-full px-4">
               <Button
                 variant="ghost"
-                className="w-full flex items-center gap-3 text-red-500 hover:text-red-600 hover:bg-red-50"
+                className="w-full flex items-center justify-start gap-3 text-red-500 hover:text-red-600 hover:bg-red-50"
                 onClick={handleLogout}
               >
                 <LogOut className="h-5 w-5" />
-                <span className={`transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`}>
-                  Logout
-                </span>
+                Logout
               </Button>
             </div>
           </SidebarContent>

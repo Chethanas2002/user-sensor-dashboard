@@ -9,7 +9,7 @@ import ActivityLogSection from "@/components/dashboard/ActivityLogSection";
 const Dashboard = () => {
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <DashboardHeader 
           title="Welcome, Admin" 
           description="Real-time overview of your system's security status"

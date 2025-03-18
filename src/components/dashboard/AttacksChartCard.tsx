@@ -17,15 +17,15 @@ const weeklyAttacksData = [
 
 const AttacksChartCard = () => {
   return (
-    <Card className="p-6">
-      <CardHeader className="px-0 pt-0">
+    <Card>
+      <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl font-semibold">Weekly Attack Attempts</CardTitle>
-          <Activity className="h-6 w-6 text-gray-500" />
+          <Activity className="h-5 w-5 text-gray-500" />
         </div>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="h-80">
+      <CardContent>
+        <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={weeklyAttacksData}>
               <XAxis dataKey="name" />
