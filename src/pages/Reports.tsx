@@ -35,12 +35,13 @@ const severityData = [
   { name: 'Low', value: 43, color: '#22c55e' },
 ];
 
-const incidentTypeData = [
-  { name: 'Malware', value: 22, color: '#8b5cf6' },
-  { name: 'Ransomware', value: 10, color: '#ec4899' }, 
-  { name: 'Phishing', value: 15, color: '#06b6d4' },
-  { name: 'Unauthorized Access', value: 8, color: '#f43f5e' },
-  { name: 'Other', value: 13, color: '#64748b' },
+// Updated: Process type data instead of incident type
+const processTypeData = [
+  { name: 'python.exe', value: 25, color: '#8b5cf6' },
+  { name: 'code.exe', value: 18, color: '#ec4899' }, 
+  { name: 'cmd.exe', value: 12, color: '#06b6d4' },
+  { name: 'powershell.exe', value: 10, color: '#f43f5e' },
+  { name: 'unknown process', value: 3, color: '#64748b' },
 ];
 
 const timelineData = [
@@ -73,7 +74,7 @@ const Reports = () => {
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   const [dateRange, setDateRange] = useState<'last7days' | 'last30days' | 'custom'>('last30days');
-  const [reportType, setReportType] = useState<string>('all');
+  const [processType, setProcessType] = useState<string>('all');
   const [email, setEmail] = useState<string>('');
   const [scheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
   const [frequency, setFrequency] = useState<string>('weekly');
@@ -204,20 +205,33 @@ const Reports = () => {
                 )}
 
                 <div className="space-y-2">
-                  <Label>Incident Type</Label>
+                  <Label>{dateRange === 'custom' ? 'Process Type' : 'Incident Type'}</Label>
                   <Select 
-                    value={reportType} 
-                    onValueChange={setReportType}
+                    value={processType} 
+                    onValueChange={setProcessType}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Incidents</SelectItem>
-                      <SelectItem value="malware">Malware</SelectItem>
-                      <SelectItem value="ransomware">Ransomware</SelectItem>
-                      <SelectItem value="phishing">Phishing</SelectItem>
-                      <SelectItem value="unauthorized">Unauthorized Access</SelectItem>
+                      {dateRange === 'custom' ? (
+                        <>
+                          <SelectItem value="all">All Processes</SelectItem>
+                          <SelectItem value="python">python.exe</SelectItem>
+                          <SelectItem value="code">code.exe</SelectItem>
+                          <SelectItem value="cmd">cmd.exe</SelectItem>
+                          <SelectItem value="powershell">powershell.exe</SelectItem>
+                          <SelectItem value="unknown">unknown process</SelectItem>
+                        </>
+                      ) : (
+                        <>
+                          <SelectItem value="all">All Incidents</SelectItem>
+                          <SelectItem value="malware">Malware</SelectItem>
+                          <SelectItem value="ransomware">Ransomware</SelectItem>
+                          <SelectItem value="phishing">Phishing</SelectItem>
+                          <SelectItem value="unauthorized">Unauthorized Access</SelectItem>
+                        </>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -319,27 +333,27 @@ const Reports = () => {
             </CardContent>
           </Card>
 
-          {/* Incident Type Distribution */}
+          {/* Process Type Distribution (replaced Incident Type) */}
           <Card>
             <CardHeader>
-              <CardTitle>Incident Types</CardTitle>
-              <CardDescription>Breakdown by attack vector</CardDescription>
+              <CardTitle>Process Types</CardTitle>
+              <CardDescription>Breakdown by process</CardDescription>
             </CardHeader>
             <CardContent className="pt-2">
               <div className="h-[220px] flex items-center justify-center">
                 <PieChart width={230} height={200}>
                   <Pie
-                    data={incidentTypeData}
+                    data={processTypeData}
                     cx="50%"
                     cy="50%"
                     innerRadius={45}
                     outerRadius={80}
                     paddingAngle={2}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${name.split('.')[0]} ${(percent * 100).toFixed(0)}%`}
                     labelLine={false}
                   >
-                    {incidentTypeData.map((entry, index) => (
+                    {processTypeData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>

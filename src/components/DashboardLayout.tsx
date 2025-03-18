@@ -19,8 +19,7 @@ import {
   Settings, 
   LogOut, 
   Shield, 
-  Search,
-  Bell 
+  Search
 } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -72,7 +71,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             
             {/* Quick actions */}
             <div className="px-4 py-2">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -84,18 +83,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 >
                   <Search className="h-4 w-4 mr-2" />
                   Search
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="justify-start"
-                  onClick={() => toast({
-                    title: "Notifications",
-                    description: "You have no new notifications"
-                  })}
-                >
-                  <Bell className="h-4 w-4 mr-2" />
-                  Alerts
                 </Button>
               </div>
             </div>
