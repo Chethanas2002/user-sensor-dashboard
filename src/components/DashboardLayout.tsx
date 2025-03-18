@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import {
   Sidebar,
@@ -23,7 +22,7 @@ import {
   Search,
   Bell 
 } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 
 interface DashboardLayoutProps {
@@ -32,6 +31,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   const handleLogout = () => {
@@ -43,17 +43,21 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   };
 
   const handleMenuClick = (path: string) => {
-    if (path === "/dashboard") {
-      // We're already on the dashboard, so just stay here
+    if (location.pathname === path) {
+      // We're already on this page, so just stay here
       return;
     }
     
-    // For other pages that aren't implemented yet
-    toast({
-      title: "Coming Soon",
-      description: "This feature is currently under development",
-      variant: "default"
-    });
+    if (path === "/dashboard" || path === "/dashboard/logs") {
+      navigate(path);
+    } else {
+      // For other pages that aren't implemented yet
+      toast({
+        title: "Coming Soon",
+        description: "This feature is currently under development",
+        variant: "default"
+      });
+    }
   };
 
   return (
@@ -104,7 +108,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className={`flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors ${
+                        location.pathname === "/dashboard" ? "bg-gray-100 font-medium" : ""
+                      }`}
                       onClick={() => handleMenuClick("/dashboard")}
                     >
                       <Home className="h-5 w-5" />
@@ -114,7 +120,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className={`flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors ${
+                        location.pathname === "/dashboard/logs" ? "bg-gray-100 font-medium" : ""
+                      }`}
                       onClick={() => handleMenuClick("/dashboard/logs")}
                     >
                       <FileText className="h-5 w-5" />
