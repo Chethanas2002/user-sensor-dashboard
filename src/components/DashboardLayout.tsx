@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import {
   Sidebar,
@@ -14,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { 
   Home, 
   FileText, 
-  AlertCircle, 
   BarChart, 
   Settings, 
   LogOut, 
@@ -48,7 +48,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       return;
     }
     
-    if (path === "/dashboard" || path === "/dashboard/logs") {
+    if (path === "/dashboard" || path === "/dashboard/logs" || path === "/dashboard/reports") {
       navigate(path);
     } else {
       // For other pages that aren't implemented yet
@@ -132,17 +132,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
-                      onClick={() => handleMenuClick("/dashboard/alerts")}
-                    >
-                      <AlertCircle className="h-5 w-5" />
-                      <span>Alerts</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className={`flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors ${
+                        location.pathname === "/dashboard/reports" ? "bg-gray-100 font-medium" : ""
+                      }`}
                       onClick={() => handleMenuClick("/dashboard/reports")}
                     >
                       <BarChart className="h-5 w-5" />
