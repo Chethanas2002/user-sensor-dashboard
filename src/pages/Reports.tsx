@@ -27,20 +27,13 @@ import { PieChart, Pie, Cell, BarChart as RechartsBarChart, Bar, XAxis, YAxis, T
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-// Mock data for the reports
-const severityData = [
-  { name: 'Critical', value: 12, color: '#ef4444' },
-  { name: 'High', value: 18, color: '#f97316' },
-  { name: 'Medium', value: 27, color: '#eab308' },
-  { name: 'Low', value: 43, color: '#22c55e' },
-];
-
-// Updated: Process type data instead of incident type
+// Updated process type data with explorer.exe added
 const processTypeData = [
   { name: 'python.exe', value: 25, color: '#8b5cf6' },
   { name: 'code.exe', value: 18, color: '#ec4899' }, 
   { name: 'cmd.exe', value: 12, color: '#06b6d4' },
   { name: 'powershell.exe', value: 10, color: '#f43f5e' },
+  { name: 'explorer.exe', value: 8, color: '#10b981' }, // Added explorer.exe
   { name: 'unknown process', value: 3, color: '#64748b' },
 ];
 
@@ -205,7 +198,7 @@ const Reports = () => {
                 )}
 
                 <div className="space-y-2">
-                  <Label>{dateRange === 'custom' ? 'Process Type' : 'Incident Type'}</Label>
+                  <Label>Process Type</Label>
                   <Select 
                     value={processType} 
                     onValueChange={setProcessType}
@@ -214,24 +207,13 @@ const Reports = () => {
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      {dateRange === 'custom' ? (
-                        <>
-                          <SelectItem value="all">All Processes</SelectItem>
-                          <SelectItem value="python">python.exe</SelectItem>
-                          <SelectItem value="code">code.exe</SelectItem>
-                          <SelectItem value="cmd">cmd.exe</SelectItem>
-                          <SelectItem value="powershell">powershell.exe</SelectItem>
-                          <SelectItem value="unknown">unknown process</SelectItem>
-                        </>
-                      ) : (
-                        <>
-                          <SelectItem value="all">All Incidents</SelectItem>
-                          <SelectItem value="malware">Malware</SelectItem>
-                          <SelectItem value="ransomware">Ransomware</SelectItem>
-                          <SelectItem value="phishing">Phishing</SelectItem>
-                          <SelectItem value="unauthorized">Unauthorized Access</SelectItem>
-                        </>
-                      )}
+                      <SelectItem value="all">All Processes</SelectItem>
+                      <SelectItem value="python">python.exe</SelectItem>
+                      <SelectItem value="code">code.exe</SelectItem>
+                      <SelectItem value="cmd">cmd.exe</SelectItem>
+                      <SelectItem value="powershell">powershell.exe</SelectItem>
+                      <SelectItem value="explorer">explorer.exe</SelectItem>
+                      <SelectItem value="unknown">unknown process</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -291,67 +273,25 @@ const Reports = () => {
             </CardContent>
           </Card>
 
-          {/* Incident Severity Distribution */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Severity Distribution</CardTitle>
-              <CardDescription>Breakdown by incident severity</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <div className="h-[220px] flex items-center justify-center">
-                <PieChart width={230} height={200}>
-                  <Pie
-                    data={severityData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={45}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    labelLine={false}
-                  >
-                    {severityData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-white p-2 border rounded shadow-sm">
-                            <p className="font-medium">{payload[0].name}</p>
-                            <p>Count: {payload[0].value}</p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                </PieChart>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Process Type Distribution (replaced Incident Type) */}
-          <Card>
+          {/* Process Type Distribution (expanded) - Took up the entire width where severity chart was */}
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle>Process Types</CardTitle>
               <CardDescription>Breakdown by process</CardDescription>
             </CardHeader>
             <CardContent className="pt-2">
-              <div className="h-[220px] flex items-center justify-center">
-                <PieChart width={230} height={200}>
+              <div className="h-[300px] flex items-center justify-center">
+                <PieChart width={500} height={300}>
                   <Pie
                     data={processTypeData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={45}
-                    outerRadius={80}
+                    innerRadius={60}
+                    outerRadius={120}
                     paddingAngle={2}
                     dataKey="value"
                     label={({ name, percent }) => `${name.split('.')[0]} ${(percent * 100).toFixed(0)}%`}
-                    labelLine={false}
+                    labelLine={true}
                   >
                     {processTypeData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -361,9 +301,10 @@ const Reports = () => {
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         return (
-                          <div className="bg-white p-2 border rounded shadow-sm">
-                            <p className="font-medium">{payload[0].name}</p>
-                            <p>Count: {payload[0].value}</p>
+                          <div className="bg-white p-3 border rounded shadow-sm">
+                            <p className="font-medium text-base">{payload[0].name}</p>
+                            <p className="text-sm">Count: {payload[0].value}</p>
+                            <p className="text-sm">Percentage: {((payload[0].value / processTypeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(1)}%</p>
                           </div>
                         );
                       }
