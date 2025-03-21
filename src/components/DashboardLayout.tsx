@@ -46,7 +46,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       return;
     }
     
-    if (path === "/dashboard" || path === "/dashboard/logs" || path === "/dashboard/reports") {
+    if (path === "/dashboard" || path === "/dashboard/logs" || path === "/dashboard/reports" || path === "/dashboard/settings") {
       navigate(path);
     } else {
       // For other pages that aren't implemented yet
@@ -68,7 +68,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               <h1 className="font-bold text-xl">RansomShield</h1>
             </div>
             
-            {/* Main Navigation - removed search bar */}
+            {/* Main Navigation */}
             <SidebarGroup>
               <SidebarGroupLabel>
                 Main Navigation
@@ -113,7 +113,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className={`flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors ${
+                        location.pathname === "/dashboard/settings" ? "bg-gray-100 font-medium" : ""
+                      }`}
                       onClick={() => handleMenuClick("/dashboard/settings")}
                     >
                       <Settings className="h-5 w-5" />
