@@ -52,15 +52,14 @@ const timelineData = [
   { month: 'Dec', incidents: 21 },
 ];
 
-const geoData = [
-  { country: 'United States', incidents: 45 },
-  { country: 'China', incidents: 38 },
-  { country: 'Russia', incidents: 32 },
-  { country: 'Germany', incidents: 15 },
-  { country: 'India', incidents: 20 },
-  { country: 'Brazil', incidents: 12 },
-  { country: 'United Kingdom', incidents: 18 },
-  { country: 'Japan', incidents: 9 },
+// Create process distribution data for the new chart
+const processDistributionData = [
+  { process: 'python.exe', count: 25 },
+  { process: 'code.exe', count: 18 },
+  { process: 'cmd.exe', count: 12 },
+  { process: 'powershell.exe', count: 10 },
+  { process: 'explorer.exe', count: 8 },
+  { process: 'unknown', count: 3 },
 ];
 
 const Reports = () => {
@@ -72,7 +71,7 @@ const Reports = () => {
   const [scheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
   const [frequency, setFrequency] = useState<string>('weekly');
 
-  const handleExport = (format: 'csv' | 'pdf') => {
+  const handleExport = (format: 'csv') => {
     toast({
       title: `Exporting as ${format.toUpperCase()}`,
       description: `Your report is being prepared for download`,
@@ -91,46 +90,6 @@ const Reports = () => {
       
       // Create a blob and download it
       const blob = new Blob([fileContent], { type: 'text/csv' });
-      downloadFile(blob, fileName);
-    } else if (format === 'pdf') {
-      // For PDF, we'll create a simple HTML and convert it to PDF-like format
-      // In a real app, you would use a proper PDF generation library
-      fileContent = `
-        <html>
-          <head>
-            <title>Security Report</title>
-            <style>
-              body { font-family: Arial, sans-serif; }
-              h1 { color: #333; }
-              table { border-collapse: collapse; width: 100%; }
-              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-              th { background-color: #f2f2f2; }
-            </style>
-          </head>
-          <body>
-            <h1>RansomShield Security Report</h1>
-            <h2>Process Type Distribution</h2>
-            <table>
-              <tr>
-                <th>Process</th>
-                <th>Count</th>
-                <th>Percentage</th>
-              </tr>
-              ${processTypeData.map(item => {
-                const percentage = ((item.value / processTypeData.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1);
-                return `<tr>
-                  <td>${item.name}</td>
-                  <td>${item.value}</td>
-                  <td>${percentage}%</td>
-                </tr>`;
-              }).join('')}
-            </table>
-          </body>
-        </html>
-      `;
-      
-      // Create a blob as HTML (in a real app, you'd convert to actual PDF)
-      const blob = new Blob([fileContent], { type: 'text/html' });
       downloadFile(blob, fileName);
     }
   };
@@ -181,10 +140,6 @@ const Reports = () => {
             <Button variant="outline" onClick={() => handleExport('csv')}>
               <FileDown className="mr-2 h-4 w-4" />
               CSV
-            </Button>
-            <Button variant="outline" onClick={() => handleExport('pdf')}>
-              <FileDown className="mr-2 h-4 w-4" />
-              PDF
             </Button>
           </div>
         </div>
@@ -415,22 +370,22 @@ const Reports = () => {
             </CardContent>
           </Card>
 
-          {/* Geographical Distribution */}
+          {/* Process Distribution (replacing Geographical Distribution) */}
           <Card className="md:col-span-3">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Geographical Distribution</CardTitle>
-                  <CardDescription>Attack sources by country</CardDescription>
+                  <CardTitle>Process Distribution</CardTitle>
+                  <CardDescription>Number of incidents by process type</CardDescription>
                 </div>
-                <Globe className="h-5 w-5 text-muted-foreground" />
+                <BarChart className="h-5 w-5 text-muted-foreground" />
               </div>
             </CardHeader>
             <CardContent>
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={geoData.sort((a, b) => b.incidents - a.incidents)}
+                  <RechartsBarChart
+                    data={processDistributionData}
                     margin={{
                       top: 5,
                       right: 30,
@@ -439,11 +394,11 @@ const Reports = () => {
                     }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="country" />
+                    <XAxis dataKey="process" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="incidents" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  </LineChart>
+                    <Bar dataKey="count" fill="#8884d8" />
+                  </RechartsBarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
