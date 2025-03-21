@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { Shield } from "lucide-react";
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -39,7 +40,10 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
       <Card className="w-full max-w-md p-8 space-y-6 bg-white/80 backdrop-blur-sm">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold tracking-tighter">Create an account</h1>
+          <div className="flex justify-center mb-4">
+            <Shield className="h-8 w-8 text-blue-500" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tighter">Create a RansomShield account</h1>
           <p className="text-gray-500">Enter your information to get started</p>
         </div>
         <form onSubmit={handleRegister} className="space-y-4">

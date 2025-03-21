@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -32,7 +33,7 @@ const Login = () => {
       <header className="w-full p-4 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center">
           <Shield className="h-8 w-8 text-blue-500 mr-2" />
-          <h1 className="text-xl font-bold text-white">SecureGuard</h1>
+          <h1 className="text-xl font-bold text-white">RansomShield</h1>
         </div>
         <div className="flex items-center gap-4">
           <Popover open={isAuthPopoverOpen} onOpenChange={setIsAuthPopoverOpen}>
@@ -269,10 +270,10 @@ const Login = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
               <Shield className="h-6 w-6 text-blue-500 mr-2" />
-              <span className="text-white font-semibold">SecureGuard</span>
+              <span className="text-white font-semibold">RansomShield</span>
             </div>
             <div className="text-gray-400 text-sm">
-              © 2023 SecureGuard. All rights reserved.
+              © 2023 RansomShield. All rights reserved.
             </div>
           </div>
         </div>

@@ -19,7 +19,6 @@ import {
   Settings, 
   LogOut, 
   Shield, 
-  Search
 } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -66,27 +65,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <SidebarContent>
             <div className="p-4 flex items-center">
               <Shield className="h-6 w-6 text-blue-500 mr-2" />
-              <h1 className="font-bold text-xl">SecureGuard</h1>
+              <h1 className="font-bold text-xl">RansomShield</h1>
             </div>
             
-            {/* Quick actions */}
-            <div className="px-4 py-2">
-              <div className="grid grid-cols-1 gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="justify-start"
-                  onClick={() => toast({
-                    title: "Search",
-                    description: "Search functionality coming soon"
-                  })}
-                >
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
-                </Button>
-              </div>
-            </div>
-            
+            {/* Main Navigation - removed search bar */}
             <SidebarGroup>
               <SidebarGroupLabel>
                 Main Navigation

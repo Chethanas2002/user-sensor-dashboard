@@ -72,11 +72,83 @@ const Reports = () => {
   const [scheduleEnabled, setScheduleEnabled] = useState<boolean>(false);
   const [frequency, setFrequency] = useState<string>('weekly');
 
-  const handleExport = (format: 'csv' | 'pdf' | 'json') => {
+  const handleExport = (format: 'csv' | 'pdf') => {
     toast({
       title: `Exporting as ${format.toUpperCase()}`,
       description: `Your report is being prepared for download`,
     });
+    
+    // Generate file data
+    let fileContent = '';
+    let fileName = `security-report-${new Date().toISOString().split('T')[0]}.${format}`;
+    
+    if (format === 'csv') {
+      // Create CSV content
+      fileContent = 'Process,Count\n';
+      processTypeData.forEach(item => {
+        fileContent += `${item.name},${item.value}\n`;
+      });
+      
+      // Create a blob and download it
+      const blob = new Blob([fileContent], { type: 'text/csv' });
+      downloadFile(blob, fileName);
+    } else if (format === 'pdf') {
+      // For PDF, we'll create a simple HTML and convert it to PDF-like format
+      // In a real app, you would use a proper PDF generation library
+      fileContent = `
+        <html>
+          <head>
+            <title>Security Report</title>
+            <style>
+              body { font-family: Arial, sans-serif; }
+              h1 { color: #333; }
+              table { border-collapse: collapse; width: 100%; }
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: #f2f2f2; }
+            </style>
+          </head>
+          <body>
+            <h1>RansomShield Security Report</h1>
+            <h2>Process Type Distribution</h2>
+            <table>
+              <tr>
+                <th>Process</th>
+                <th>Count</th>
+                <th>Percentage</th>
+              </tr>
+              ${processTypeData.map(item => {
+                const percentage = ((item.value / processTypeData.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1);
+                return `<tr>
+                  <td>${item.name}</td>
+                  <td>${item.value}</td>
+                  <td>${percentage}%</td>
+                </tr>`;
+              }).join('')}
+            </table>
+          </body>
+        </html>
+      `;
+      
+      // Create a blob as HTML (in a real app, you'd convert to actual PDF)
+      const blob = new Blob([fileContent], { type: 'text/html' });
+      downloadFile(blob, fileName);
+    }
+  };
+  
+  // Helper function to download a file
+  const downloadFile = (blob: Blob, fileName: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
   };
 
   const handleScheduleReport = () => {
@@ -113,10 +185,6 @@ const Reports = () => {
             <Button variant="outline" onClick={() => handleExport('pdf')}>
               <FileDown className="mr-2 h-4 w-4" />
               PDF
-            </Button>
-            <Button variant="outline" onClick={() => handleExport('json')}>
-              <FileDown className="mr-2 h-4 w-4" />
-              JSON
             </Button>
           </div>
         </div>
@@ -300,11 +368,13 @@ const Reports = () => {
                   <Tooltip 
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
+                        const totalValue = processTypeData.reduce((sum, item) => sum + item.value, 0);
+                        const percentage = ((payload[0].value as number) / totalValue * 100).toFixed(1);
                         return (
                           <div className="bg-white p-3 border rounded shadow-sm">
                             <p className="font-medium text-base">{payload[0].name}</p>
                             <p className="text-sm">Count: {payload[0].value}</p>
-                            <p className="text-sm">Percentage: {((payload[0].value / processTypeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(1)}%</p>
+                            <p className="text-sm">Percentage: {percentage}%</p>
                           </div>
                         );
                       }
